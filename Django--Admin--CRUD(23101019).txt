@@ -1,0 +1,100 @@
+1.pip install Django
+2.django-admin startproject mysite
+3.python mysite
+4.python manage.py runserver
+5.create directory named template under mysite
+6.create home.html under template directory
+7.mysite app e giye settings.py e TEMPLATES e giye DIRS er bhitor template likhbo
+8.mysite app e views.py file create korbo
+9.views.py e giye ----
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'home.html')
+
+10.urls,py e giye function call korbo
+
+from .import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',views.home)
+]
+
+11.notun ekta another.html khullam and 9,10 step repeat korlam
+
+12.home and another html er modhhelink korbo 
+another.html e 
+<a href="{% url 'home'  %}">Go to home page</a>
+home.html e
+<a href="{% url 'another'  %}">Go to another page</a>
+
+13.python manage.py migrate
+
+14.python manage.py createsuperuser(name,email,password dibo)
+
+15.python manage.py startapp products
+
+16.mysite er settings.py e giye INSTALLED APPS e 'products', likhbo
+
+17.products app e urls.py file banabo
+
+18. mysite er urls e jeye 
+
+from django.contrib import admin
+from django.urls import path,include
+from .import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',views.home,name='home'),
+    path('another',views.another,name='another'),
+    path('/p',include('products.urls'))
+]
+
+19.prodect-page name html file khulbo
+
+20. products er views.py e 
+from django.shortcuts import render
+def view_products(request):
+    return render(request,'product-page.html')
+
+21. products er urls.py e
+
+from django.urls import path
+urlpatterns = [
+    # path('admin/', admin.site.urls),
+    path('vp',views.view_products,name='view_products'),
+
+]
+
+22.home html e giye 
+<a href="{% url 'view_products'  %}">Go to product page</a> add kore dibo
+
+23.products er models.py e jeye
+
+from django.db import models
+
+class Product(models.Model):
+    name=models.CharField(max_length=100)
+    price=models.FloatField(default=0.0)
+    description=models.TextField(max_length=1000)
+
+24.python manage.py makemigrations
+
+python manage.py migrate
+
+25.models.py e jotobar change hobe totobar 24 no step korte hobe
+
+26.products er admin.py e jeye
+
+from django.contrib import admin
+from .models import Product
+admin.site.register(Product)
+
+27.products er models.py e jeye 
+
+    def __str__(self):
+        return self.name
+add kore dibo
+
+
+
